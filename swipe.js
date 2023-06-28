@@ -1,19 +1,34 @@
 /*
-  NODE JS
-
-  Swap tiles
-
-  Use scenario
-  When font is loaded in GB it occupies first 36 places (0x24)
-
-  so the challenge here is to read .c file and 
-  remake all tile ids in tilemap array
-
+  USE NODE JS
 */
+
+function intToDexStr(integer){
+  //
+}
+
+function swipeRight(charArray, swipeN = 36){
+  
+  let number = new String;
+  for (let i=0; i<charArray.length; i++) {
+    let spaces = '';
+    let ns = charArray[i];
+    if (ns.length > 4) {
+      spaces = '\r\n  ';
+      number = ns.slice(ns.length-4,ns.length)
+    } else { 
+      number = ns 
+    }
+    
+    charArray[i] = spaces + '0x' + (parseInt(number,16) + swipeN + 1).toString(16);
+
+  }
+
+  return charArray
+}
 
 const fs = require('fs');
 
-const data = fs.readFileSync('./bg2.c', 'utf8', (err, data) => {
+const data = fs.readFileSync('./tilemap_example.c', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -39,19 +54,22 @@ for (let i=0; i < data.length; i++){
 console.log(newstring[newstring.length-5])
 
 let charArray = newstring.split(",");
-console.log(charArray);
+let swipedArr = swipeRight(charArray);
+console.log(swipedArr);
 
-let content1 = newstring;
-fs.writeFile('./test.txt', content1, err => {
+
+// The map array
+let content1 = swipedArr.toString();
+fs.writeFile('./output.txt', content1, err => {
   if (err) {
     console.error(err);
   }
   // file written successfully
 });
 
-
+// Everything else
 let content2 = data.slice(0, start+1) + "\n...\n" + data.slice(end, data.length)
-fs.writeFile('./test2.txt', content2, err => {
+fs.writeFile('./residuals.txt', content2, err => {
   if (err) {
     console.error(err);
   }
