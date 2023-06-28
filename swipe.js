@@ -2,10 +2,6 @@
   USE NODE JS
 */
 
-function intToDexStr(integer){
-  //
-}
-
 function swipeRight(charArray, swipeN = 36){
   
   let number = new String;
@@ -19,7 +15,7 @@ function swipeRight(charArray, swipeN = 36){
       number = ns 
     }
     
-    charArray[i] = spaces + '0x' + (parseInt(number,16) + swipeN + 1).toString(16);
+    charArray[i] = spaces + '0x' + (parseInt(number,16) + swipeN).toString(16);
 
   }
 
@@ -28,7 +24,7 @@ function swipeRight(charArray, swipeN = 36){
 
 const fs = require('fs');
 
-const data = fs.readFileSync('./tilemap_example.c', 'utf8', (err, data) => {
+const data = fs.readFileSync('./tilemap_input.c', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -51,16 +47,17 @@ for (let i=0; i < data.length; i++){
     write = false;
   }  
 }
-console.log(newstring[newstring.length-5])
 
 let charArray = newstring.split(",");
-let swipedArr = swipeRight(charArray);
+console.log("Initial lenght: ", charArray.length);
+let swipedArr = swipeRight(charArray, swipeN=-1);
+console.log("Result lenght: ", swipedArr.length);
 console.log(swipedArr);
 
 
 // The map array
 let content1 = swipedArr.toString();
-fs.writeFile('./output.txt', content1, err => {
+fs.writeFile('./arrdata.txt', content1, err => {
   if (err) {
     console.error(err);
   }
@@ -68,8 +65,8 @@ fs.writeFile('./output.txt', content1, err => {
 });
 
 // Everything else
-let content2 = data.slice(0, start+1) + "\n...\n" + data.slice(end, data.length)
-fs.writeFile('./residuals.txt', content2, err => {
+let content2 = data.slice(0, start+1) + content1 + data.slice(end, data.length)
+fs.writeFile('./tilemap_output.c', content2, err => {
   if (err) {
     console.error(err);
   }
