@@ -60,7 +60,7 @@ let charArray = newstring.split(",");
 // Swipe all values to the right
 // You can specify swipeN here!
 // e.g. swipeRight(charArray, swipeN=-1);
-let swipedArr = swipeRight(charArray);
+let swipedArr = swipeRight(charArray, swipeN = 1);
 
 // Check sums
 if (charArray.length!==swipedArr.length) {
